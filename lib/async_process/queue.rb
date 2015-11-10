@@ -30,8 +30,8 @@ module AsyncProcess
           @workers << FilesWorker.new(@scanner, on_file, on_end).process_folder(folder)
           end
         end
+        @on_queue_end.call if @on_queue_end
       end
-      @on_queue_end.call if @on_queue_end
 
     end
 
@@ -39,8 +39,6 @@ module AsyncProcess
     def on_file
       lambda do |file|
         @on_file_process.call(file) if @on_file_process
-        p "Processing file:#{file}"
-        p "#{@workers.size}"
       end
     end
 
