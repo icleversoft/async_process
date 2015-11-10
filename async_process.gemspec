@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["icleversoft"]
   spec.email         = ["iphone@icleversoft.com"]
   spec.summary       = %q{Simple gem for processing files}
-  spec.description   = %q{This gem scans for files into directories and creates callbacks in order to process them}
+  spec.description   = %q{This gem scans for files into directories and creates callbacks in order to control the way of processing}
   spec.homepage      = ""
   spec.license       = "MIT"
 
