@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AsyncProcess
 
 TODO: Write a gem description
@@ -27,3 +28,7 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+=======
+# async_process
+Simple gem that gives you control on scanning and processing files
+>>>>>>> 05790760174321af68fc5920087225097aed6c65
