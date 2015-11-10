@@ -1,5 +1,6 @@
 module AsyncProcess  
   class FileScanner
+
     def initialize( root = '.' )
       @root =  root 
     end
@@ -19,6 +20,8 @@ module AsyncProcess
         files_array(folder, pattern).map{|x| last_path_part(x)}
       end
     end
+
+
     private
     def files_array(folder, pattern)
       Dir[File.join("#{@root}", last_path_part(folder), pattern)] 
