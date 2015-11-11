@@ -2,12 +2,10 @@ module AsyncProcess
   class Queue
     CONCURRENT_WORKERS = 3
     attr_reader :scanner
-    def initialize( scanner, on_file_process = nil, on_queue_end = nil  )
+    def initialize( scanner )
       @scanner = scanner
       @folders = scanner.folders
       @workers = []
-      @on_file_process = on_file_process
-      @on_queue_end = on_queue_end
     end
 
     def size
@@ -23,29 +21,27 @@ module AsyncProcess
       @workers_count = value.to_i
     end
 
-    def process
+    def process(&block)
+      raise LoadError.new("You should use a block") unless block
       fork do
         while folder = @folders.pop
           if @workers.size < workers_count 
-          @workers << FilesWorker.new(@scanner, on_file, on_end).process_folder(folder)
+            worker = FilesWorker.new(@scanner)
+            @workers << worker
+            worker.process_folder( folder ) do |on|
+              on.file_in_folder do |file, folder|
+                block.call_event :file_to_process, file
+              end
+              on.folder_end do |folder|
+                @workers.pop
+              end
+            end
           end
         end
-        @on_queue_end.call if @on_queue_end
       end
+        block.call_event :queue_end
 
     end
 
-    private
-    def on_file
-      lambda do |file|
-        @on_file_process.call(file) if @on_file_process
-      end
-    end
-
-    def on_end
-      lambda do
-        @workers.pop
-      end
-    end
   end
 end

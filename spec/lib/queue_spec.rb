@@ -9,7 +9,6 @@ module AsyncProcess
 
     it "responds to process" do
       expect(queue).to respond_to :process
-      queue.process
     end
 
     it "holds correctly folder's size" do
@@ -28,6 +27,12 @@ module AsyncProcess
       it "changes workers_count for a new value" do
         queue.workers_count = 4
         expect(queue.workers_count).to eq 4
+      end
+    end
+    
+    context "#process" do
+      it "raises an error when no block is provided" do
+        expect{queue.process}.to raise_error LoadError
       end
     end
 
