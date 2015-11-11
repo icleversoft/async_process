@@ -4,7 +4,10 @@ class Proc
       define_method method.to_sym do |&b|
         b.nil? ? true : b.call( *args )
       end
-      def method_missing( method, *args, &block ) false; end
+      define_method("#{method}?"){true}
+      def method_missing( method, *args, &block )
+        false
+      end
     end
     self.call( anonymous.new )
   end
