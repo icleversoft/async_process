@@ -9,6 +9,7 @@ module AsyncProcess
 
     it "responds to process" do
       expect(queue).to respond_to :process
+      queue.process
     end
 
     it "holds correctly folder's size" do
