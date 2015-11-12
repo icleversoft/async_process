@@ -31,5 +31,12 @@ module AsyncProcess
       end
     end
 
+    context "#files_count" do
+      it "returns correctly the number of files contained under root folder" do
+        expect(scanner.files_count).to eq 53 
+        expect(scanner.files_count("*.xxx")).to eq 0
+      end
+    end
+
   end
 end

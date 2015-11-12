@@ -1,11 +1,13 @@
 module AsyncProcess
   class Queue
     CONCURRENT_WORKERS = 3
-    attr_reader :scanner
+    attr_reader :scanner, :processed_files, :files_count
     def initialize( scanner )
       @scanner = scanner
       @folders = scanner.folders
       @workers = []
+      @processed_files = 0
+      @files_count = scanner.files_count
     end
 
     def size
@@ -31,6 +33,7 @@ module AsyncProcess
             worker.process_folder( folder ) do |on|
               on.file_in_folder do |file, folder|
                 block.call_event :file_to_process, file
+                @processed_files += 1
               end
               on.folder_end do |folder|
                 @workers.pop
