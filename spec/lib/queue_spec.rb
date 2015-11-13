@@ -34,6 +34,16 @@ module AsyncProcess
       it "raises an error when no block is provided" do
         expect{queue.process}.to raise_error LoadError
       end
+      it "process each folder successfully" do
+        queue.process do |on|
+          on.file_to_process do |file|
+            p file 
+          end
+          on.queue_end do
+            p "Queue end"
+          end
+        end
+      end
     end
 
   end

@@ -1,3 +1,4 @@
+require 'parallel'
 module AsyncProcess
   class Queue
     CONCURRENT_WORKERS = 3
@@ -5,7 +6,6 @@ module AsyncProcess
     def initialize( scanner )
       @scanner = scanner
       @folders = scanner.folders
-      @workers = []
       @processed_files = 0
       @files_count = scanner.files_count
     end
@@ -25,26 +25,18 @@ module AsyncProcess
 
     def process(&block)
       raise LoadError.new("You should use a block") unless block
-      fork do
-        while folder = @folders.pop
-          if @workers.size < workers_count 
-            worker = FilesWorker.new(@scanner)
-            @workers << worker
-            worker.process_folder( folder ) do |on|
-              on.file_in_folder do |file, folder|
-                block.call_event :file_to_process, file
-                @processed_files += 1
-              end
-              on.folder_end do |folder|
-                @workers.pop
-              end
-            end
+      Parallel.each(@folders, in_process: workers_count) do |folder|
+        worker = FilesWorker.new(@scanner)
+        worker.process_folder( folder ) do |on|
+          on.file_in_folder do |file, folder|
+            block.call_event :file_to_process, file
+            @processed_files += 1
+          end
+          on.folder_end do |folder|
           end
         end
       end
-        block.call_event :queue_end
-
+      block.call_event :queue_end
     end
-
   end
 end
