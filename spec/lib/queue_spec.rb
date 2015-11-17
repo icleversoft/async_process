@@ -36,17 +36,16 @@ module AsyncProcess
       end
       it "process each folder successfully" do
         queue.process do |on|
-          on.file_to_process do |file|
+          on.item_to_process do |file|
             p file 
           end
           on.queue_end do
-            p "Queue end"
+            p "queue end"
           end
         end
       end
     end
 
   end
-
 
 end

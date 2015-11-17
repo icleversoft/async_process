@@ -25,18 +25,10 @@ module AsyncProcess
 
     def process(&block)
       raise LoadError.new("You should use a block") unless block
-      Parallel.each(@folders, in_process: workers_count) do |folder|
-        worker = FilesWorker.new(@scanner)
-        worker.process_folder( folder ) do |on|
-          on.file_in_folder do |file, folder|
-            block.call_event :file_to_process, file
-            @processed_files += 1
-          end
-          on.folder_end do |folder|
-          end
-        end
+      Runner.from_worker(FilesWorker.new(@scanner)).run do |on|
+        on.item_to_process{ |item| block.call_event :item_to_process, item}
+        on.queue_end{ block.call_event :queue_end }
       end
-      block.call_event :queue_end
     end
   end
 end

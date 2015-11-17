@@ -4,18 +4,18 @@ module AsyncProcess
     let(:scanner){FileScanner.new( File.join(File.dirname(__FILE__), '../support', 'root' ) )}
     let(:worker){FilesWorker.new(scanner)}
 
-    it "responds to process_folder" do
-      expect(worker).to respond_to :process_folder
+    it "responds to process" do
+      expect(worker).to respond_to :process
     end
 
     context "#process_folder" do
       it "process correctly a folder" do
         expect{
-          worker.process_folder("01") do |on|
-            on.file_in_folder do |file, folder|
+          worker.process("01") do |on|
+            on.process_item do |file, folder|
               print "Processing file: #{file}...\n"
             end
-            on.folder_end do |folder|
+            on.collection_end do |folder|
               print "Process finished"
             end
           end
