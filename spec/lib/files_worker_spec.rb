@@ -2,7 +2,7 @@ require 'spec_helper'
 module AsyncProcess
   describe FilesWorker do
     let(:scanner){FileScanner.new( File.join(File.dirname(__FILE__), '../support', 'root' ) )}
-    let(:worker){FilesWorker.new(scanner)}
+    let(:worker){FilesWorker.new([], scanner: scanner)}
 
     it "responds to process" do
       expect(worker).to respond_to :process

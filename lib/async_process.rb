@@ -1,3 +1,4 @@
+require "async_process/worker"
 require "async_process/file_scanner"
 require "async_process/files_worker"
 require "async_process/queue"

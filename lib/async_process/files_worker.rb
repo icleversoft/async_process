@@ -1,9 +1,9 @@
 module AsyncProcess  
-	class FilesWorker
+	class FilesWorker < Worker
     attr_reader :items
-		def initialize( scanner )
-			@scanner = scanner
-      @items = @scanner.folders
+		def initialize( items = [], options = {})
+			@scanner = options[:scanner] 
+      super( @scanner.folders, {} )
 		end
 
 		def process(item, &block)
