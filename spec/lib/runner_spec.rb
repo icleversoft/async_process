@@ -16,10 +16,6 @@ module AsyncProcess
         end
       end
     end
-
-    context "complex worker" do
-
-    end
   end
 
 end
