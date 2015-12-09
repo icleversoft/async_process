@@ -3,7 +3,8 @@ module AsyncProcess
     attr_reader :items
 		def initialize( items = [], options = {})
 			@scanner = options[:scanner] 
-      super( @scanner.folders, {} )
+      raise ArgumentError.new("You should pass a FileScanner") unless @scanner
+      super( @scanner.folders )
 		end
 
 		def process(item, &block)

@@ -14,6 +14,7 @@ module AsyncProcess
     end
 
     def run(&block)
+      raise LoadError.new("You should use a block") unless block
       Parallel.each( @worker.items, in_process: process_count ) do |item|
         if @worker.respond_to? :process
           @worker.process( item ) do |on|
