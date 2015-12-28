@@ -10,7 +10,7 @@ module AsyncProcess
 
     def initialize( worker, process_count )
       @worker = worker
-      @process_count ||= 10
+      @process_count ||= 3 
     end
 
     def run(&block)
